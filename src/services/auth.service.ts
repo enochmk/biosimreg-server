@@ -18,6 +18,7 @@ export const login = async (username: string, password: string) => {
 
 	// ! check if password match
 	const hashedPassword = md5(password);
+	
 	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
 
 	// return user object

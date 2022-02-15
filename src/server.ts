@@ -7,6 +7,7 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 
 import routes from './routes';
+import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(hpp());
 app.use('/', routes);
+app.use(errorHandler);
 
 // start express server
 app.listen(port, () => {

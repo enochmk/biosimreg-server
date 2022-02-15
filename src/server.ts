@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(hpp());
 
-app.listen(port, async () => {
+app.listen(port, () => {
 	const message = `Server is running in mode: ${env} at http://localhost:${port}`;
 	console.log(message);
 });

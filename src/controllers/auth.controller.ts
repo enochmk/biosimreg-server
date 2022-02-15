@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+
 import * as AuthService from '../services/auth.service';
 import asyncHandler from '../middlewares/asyncHandler';
 

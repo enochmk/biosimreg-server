@@ -18,11 +18,11 @@ export const login = async (username: string, password: string) => {
 
 	// ! check if password match
 	const hashedPassword = md5(password);
-	
+
 	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
 
 	// return user object
-	const payload = {
+	const data = {
 		firstName: user.firstName,
 		lastName: user.lastName,
 		id: user.id,
@@ -30,7 +30,7 @@ export const login = async (username: string, password: string) => {
 		msisdn: user.msisdn,
 	};
 
-	const token = generateAccessToken(payload);
+	const token = generateAccessToken(data);
 
-	return token;
+	return { data, token };
 };

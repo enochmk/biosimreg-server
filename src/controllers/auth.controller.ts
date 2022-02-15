@@ -3,9 +3,7 @@ import * as AuthService from '../services/auth.service';
 import asyncHandler from '../middlewares/asyncHandler';
 
 export const login = asyncHandler(async (req: Request, res: Response) => {
-	const token = await AuthService.login(req.body.username, req.body.password);
+	const data = await AuthService.login(req.body.username, req.body.password);
 
-	return res.send({
-		token,
-	});
+	return res.send(data);
 });

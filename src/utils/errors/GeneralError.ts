@@ -1,4 +1,4 @@
-import Messages from '../../constants/messages/app.messages';
+import Messages from '../messages/app.messages';
 
 class GeneralError extends Error {
 	statusCode: number;

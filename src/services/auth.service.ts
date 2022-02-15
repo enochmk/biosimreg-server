@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
+import md5 from 'md5';
 import HttpError from '../utils/errors/HttpError';
 import { generateAccessToken } from '../helpers/tokenGenerator';
 
@@ -11,12 +11,14 @@ export const login = async (username: string, password: string) => {
 			username: username,
 		},
 	});
+	// console.log(user.password)
 
 	// ! Check if user exists
 	if (!user) throw new HttpError('Invalid credentials', 401);
 
 	// ! check if password match
-	if (user.password !== password) throw new HttpError('Invalid credentials', 401);
+	const hashedPassword = md5(password);
+	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
 
 	// return user object
 	const payload = {

@@ -21,7 +21,7 @@ app.use(morgan('short'));
 app.use(express.json());
 app.use(helmet());
 app.use(hpp());
-app.use('/', routes);
+app.use('/api', routes);
 app.use(errorHandler);
 
 // start express server

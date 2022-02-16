@@ -43,5 +43,5 @@ export const loginWithUsernameAndPassword = async (username: string, password: s
 	// generate token
 	const token = generateToken(data);
 
-	return { user: data, token };
+	return { ...data, token };
 };

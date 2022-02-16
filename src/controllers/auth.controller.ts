@@ -6,5 +6,5 @@ import asyncHandler from '../middlewares/asyncHandler';
 export const login = asyncHandler(async (req: Request, res: Response) => {
 	const data = await AuthService.loginWithUsernameAndPassword(req.body.username, req.body.password);
 
-	return res.send(data);
+	return res.json(data);
 });

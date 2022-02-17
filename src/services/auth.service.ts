@@ -1,40 +1,48 @@
-import { PrismaClient } from '@prisma/client';
 import md5 from 'md5';
-import Yup from 'yup';
+import { PrismaClient } from '@prisma/client';
 
 import HttpError from '../utils/errors/HttpError';
-import { generateAccessToken } from '../helpers/tokenGenerator';
+import { IUser } from './../interfaces/User.interface';
+import { generateToken } from '../helpers/tokenGenerator';
 
 
-export const login = async (username: string, password: string) => {
+/**
+ * @description Login user
+ */
+export const loginWithUsernameAndPassword = async (username: string, password: string) => {
 	const prisma = new PrismaClient();
 
-	
+	// get a user by username
 	const user = await prisma.user.findFirst({
 		where: {
 			username: username,
 		},
 	});
-	// console.log(user.password)
 
 	// ! Check if user exists
-	if (!user) throw new HttpError('Invalid credentials', 401);
+	if (!user) {
+		throw new HttpError('Invalid credentials', 401);
+	}
 
-	// ! check if password match
+	// hash password with MD5 algorithm
 	const hashedPassword = md5(password);
 
-	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
+	// ! check if password match
+	if (user.password !== hashedPassword) {
+		throw new HttpError('Invalid credentials', 401);
+	}
 
 	// return user object
-	const data = {
+	const data: IUser = {
+		id: user.id,
 		firstName: user.firstName,
 		lastName: user.lastName,
-		id: user.id,
 		username: user.username,
 		msisdn: user.msisdn,
 	};
 
-	const token: string = generateAccessToken(data);
+	// generate token
+	const token = generateToken(data);
 
-	return { data, token };
+	return { ...data, token };
 };

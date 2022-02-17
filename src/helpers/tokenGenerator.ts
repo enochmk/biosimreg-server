@@ -1,9 +1,11 @@
 import config from 'config';
 import jwt from 'jsonwebtoken';
 
+import { IUser } from './../interfaces/User.interface';
+
 const JWT_SECRET: string = config.get('jwt.secret');
 
-export const generateAccessToken = (payload: any) => {
+export const generateToken = (payload: IUser) => {
 	const accessToken = jwt.sign(payload, JWT_SECRET, {
 		expiresIn: config.get('jwt.expiresIn'),
 	});

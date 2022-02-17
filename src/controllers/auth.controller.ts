@@ -8,4 +8,3 @@ export const login = asyncHandler(async (req: Request, res: Response) => {
 
 	return res.json(data);
 });
-

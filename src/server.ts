@@ -5,9 +5,12 @@ import cors from 'cors';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
+import { PrismaClient } from '@prisma/client';
 
 import routes from './routes';
 import errorHandler from './middlewares/errorHandler';
+
+const prisma = new PrismaClient();
 
 dotenv.config();
 
@@ -28,4 +31,11 @@ app.use(errorHandler);
 app.listen(port, () => {
 	const message = `Server is running in mode: ${env} at http://localhost:${port}`;
 	console.log(message);
+	prisma
+		.$connect()
+		.then(() => console.log('Connected to database'))
+		.catch((err: any) => {
+			console.error(err);
+			process.exit(1);
+		});
 });

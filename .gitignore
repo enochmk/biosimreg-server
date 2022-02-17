@@ -28,5 +28,4 @@ log.*
 src/mongo.test.ts
 src/test.ts
 
-prisma/migrations
 package-lock.json

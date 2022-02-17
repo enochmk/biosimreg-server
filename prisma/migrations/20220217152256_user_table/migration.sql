@@ -1,0 +1,32 @@
+BEGIN TRY
+
+BEGIN TRAN;
+
+-- CreateTable
+CREATE TABLE [dbo].[TBL_CORE_USERS] (
+    [id] INT NOT NULL IDENTITY(1,1),
+    [firstName] VARCHAR(30) NOT NULL,
+    [lastName] VARCHAR(30) NOT NULL,
+    [msisdn] VARCHAR(9) NOT NULL,
+    [username] VARCHAR(50) NOT NULL,
+    [password] VARCHAR(60) NOT NULL,
+    [active] INT NOT NULL CONSTRAINT [TBL_CORE_USERS_active_df] DEFAULT 1,
+    [createdAt] DATETIME2 NOT NULL CONSTRAINT [TBL_CORE_USERS_createdAt_df] DEFAULT CURRENT_TIMESTAMP,
+    [updatedAt] DATETIME2,
+    CONSTRAINT [TBL_CORE_USERS_pkey] PRIMARY KEY ([id]),
+    CONSTRAINT [TBL_CORE_USERS_msisdn_key] UNIQUE ([msisdn]),
+    CONSTRAINT [TBL_CORE_USERS_username_key] UNIQUE ([username])
+);
+
+COMMIT TRAN;
+
+END TRY
+BEGIN CATCH
+
+IF @@TRANCOUNT > 0
+BEGIN
+    ROLLBACK TRAN;
+END;
+THROW
+
+END CATCH

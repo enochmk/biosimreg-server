@@ -4,20 +4,13 @@ import { PrismaClient } from '@prisma/client';
 import HttpError from '../utils/errors/HttpError';
 import { IUser } from './../interfaces/User.interface';
 import { generateToken } from '../helpers/tokenGenerator';
-
+import { getUserByUsername } from '../models/User';
 
 /**
  * @description Login user
  */
 export const loginWithUsernameAndPassword = async (username: string, password: string) => {
-	const prisma = new PrismaClient();
-
-	// get a user by username
-	const user = await prisma.user.findFirst({
-		where: {
-			username: username,
-		},
-	});
+	const user = await getUserByUsername(username);
 
 	// ! Check if user exists
 	if (!user) {

@@ -1,11 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 import md5 from 'md5';
+import Yup from 'yup';
+
 import HttpError from '../utils/errors/HttpError';
 import { generateAccessToken } from '../helpers/tokenGenerator';
+
 
 export const login = async (username: string, password: string) => {
 	const prisma = new PrismaClient();
 
+	
 	const user = await prisma.user.findFirst({
 		where: {
 			username: username,
@@ -30,7 +34,7 @@ export const login = async (username: string, password: string) => {
 		msisdn: user.msisdn,
 	};
 
-	const token = generateAccessToken(data);
+	const token: string = generateAccessToken(data);
 
 	return { data, token };
 };

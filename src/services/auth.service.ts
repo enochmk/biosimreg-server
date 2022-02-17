@@ -5,6 +5,7 @@ import HttpError from '../utils/errors/HttpError';
 import { IUser } from './../interfaces/User.interface';
 import { generateToken } from '../helpers/tokenGenerator';
 
+
 /**
  * @description Login user
  */

@@ -35,7 +35,7 @@ app.listen(port, () => {
 		.$connect()
 		.then(() => console.log('Connected to database'))
 		.catch((err: any) => {
-			console.error(err);
+			console.error(err.message);
 			process.exit(1);
 		});
 });

@@ -1,8 +1,7 @@
 import md5 from 'md5';
-import { PrismaClient } from '@prisma/client';
 
 import HttpError from '../utils/errors/HttpError';
-import { IUser } from './../interfaces/User.interface';
+import { IUser } from '../interfaces/User.interface';
 import { generateToken } from '../helpers/tokenGenerator';
 import { getUserByUsername } from '../models/User';
 

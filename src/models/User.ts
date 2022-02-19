@@ -4,11 +4,13 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 export const getUserByUsername = async (username: string) => {
-	return await prisma.user.findUnique({
+	const data = await prisma.user.findUnique({
 		where: {
 			username,
 		},
 	});
+
+	return data;
 };
 
 export const getUserStatistics = async (agentID: string) => {

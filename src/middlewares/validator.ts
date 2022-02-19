@@ -12,7 +12,7 @@ const validator =
 				params: req.params,
 			});
 
-			next();
+			return next();
 		} catch (err: any) {
 			return next(new ValidationError(err));
 		}

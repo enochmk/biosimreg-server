@@ -7,4 +7,4 @@ export const loginSchema = yup.object({
 	}),
 });
 
-export type loginInputs = yup.InferType<typeof loginSchema>['body'];
+export type LoginInputs = yup.InferType<typeof loginSchema>['body'];

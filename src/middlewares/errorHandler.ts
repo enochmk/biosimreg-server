@@ -1,10 +1,10 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'express';
 import moment from 'moment';
 
 import HttpError from '../utils/errors/HttpError';
 import ValidationError from '../utils/errors/ValidationError';
 
-const errorHandler = (error: any, req: Request, res: Response, next: NextFunction) => {
+const errorHandler = (error: any, req: Request, res: Response) => {
 	const channelID: string = req.body.channelID || req.query.channelID;
 
 	const response = {

@@ -1,4 +1,4 @@
-import { getUserStatistics } from './../models/User';
+import { getUserStatistics } from '../models/User';
 
 /**
  * @description User Service

@@ -1,7 +1,7 @@
 import config from 'config';
 import jwt from 'jsonwebtoken';
 
-import { IUser } from './../interfaces/User.interface';
+import { IUser } from '../interfaces/User.interface';
 
 const JWT_SECRET: string = config.get('jwt.secret');
 

@@ -3,7 +3,7 @@
 		"browser": true,
 		"es2021": true
 	},
-	"extends": ["airbnb-base", "airbnb-typescript/base", "prettier", "plugin:node/recommended"],
+	"extends": ["airbnb-base", "airbnb-typescript/base", "prettier"],
 	"plugins": ["prettier", "@typescript-eslint"],
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
@@ -18,6 +18,8 @@
 		"func-names": "off",
 		"no-process-exit": "off",
 		"object-shorthand": "off",
-		"class-methods-use-this": "off"
+		"class-methods-use-this": "off",
+		"import/prefer-default-export": "off",
+		"prefer-destructuring": "off"
 	}
 }

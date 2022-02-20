@@ -1,13 +1,13 @@
 {
-	"name": "biosimreg-backend",
-	"version": "1.0.1",
+	"name": "biosimreg-server",
+	"version": "1.1.0",
 	"description": "",
 	"main": "server.js",
 	"scripts": {
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
 		"start": "node build/server",
 		"prepare": "husky install",
-		"release": "standard-version",
+		"release": "npm run prettier && npm run lint && standard-version",
 		"lint-staged": "lint-staged",
 		"lint": "npm run lint:check && npm run lint:fix",
 		"lint:check": "eslint . --ext .ts",

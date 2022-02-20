@@ -1,10 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import moment from 'moment';
 
 import HttpError from '../utils/errors/HttpError';
 import ValidationError from '../utils/errors/ValidationError';
 
-const errorHandler = (error: any, req: Request, res: Response) => {
+// eslint-disable-next-line
+const errorHandler = (error: any, req: Request, res: Response, _next: NextFunction) => {
 	const channelID: string = req.body.channelID || req.query.channelID;
 
 	const response = {

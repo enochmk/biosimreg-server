@@ -1,12 +1,13 @@
 import { Router } from 'express';
 
 import validator from '../middlewares/validator';
-import { login, logout } from '../controllers/auth.controller';
+import { handleLogin, handleLogout, handleRefreshToken } from '../controllers/auth.controller';
 import { loginSchema } from '../validations/login.schema';
 
 const router = Router();
 
-router.route('/login').post(validator(loginSchema), login);
-router.route('/logout').get(logout);
+router.route('/login').post(validator(loginSchema), handleLogin);
+router.route('/refresh').get(handleRefreshToken);
+router.route('/logout').get(handleLogout);
 
 export default router;

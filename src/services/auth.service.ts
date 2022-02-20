@@ -1,5 +1,4 @@
 import md5 from 'md5';
-// import { getUserByRefreshToken } from '../models/User';
 
 import HttpError from '../utils/errors/HttpError';
 import { IUser } from '../interfaces/User.interface';
@@ -10,17 +9,13 @@ export const loginWithUsernameAndPassword = async (username: string, password: s
 	const user = await getUserByUsername(username);
 
 	// ! User does not exist
-	if (!user) {
-		throw new HttpError('Invalid credentials', 401);
-	}
+	if (!user) throw new HttpError('Invalid credentials', 401);
 
 	// hash password with MD5 algorithm
 	const hashedPassword = md5(password);
 
 	// ! Password does not match
-	if (user.password !== hashedPassword) {
-		throw new HttpError('Invalid credentials', 401);
-	}
+	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
 
 	// return user object
 	const data: IUser = {
@@ -42,9 +37,3 @@ export const loginWithUsernameAndPassword = async (username: string, password: s
 
 	return { ...data, accessToken, refreshToken };
 };
-
-// export const logout = async (refreshToken: string) => {
-// 	if (!user) {
-// 		throw new HttpError('Invalid credentials', 401);
-// 	}
-// };

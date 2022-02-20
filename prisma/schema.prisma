@@ -8,15 +8,16 @@ datasource db {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  firstName String    @db.VarChar(30)
-  lastName  String    @db.VarChar(30)
-  msisdn    String    @unique @db.VarChar(9)
-  username  String    @unique @db.VarChar(50)
-  password  String    @db.VarChar(60)
-  active    Int       @default(1) @db.Int
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id           Int       @id @default(autoincrement())
+  firstName    String    @db.VarChar(30)
+  lastName     String    @db.VarChar(30)
+  msisdn       String    @unique @db.VarChar(9)
+  username     String    @unique @db.VarChar(50)
+  password     String    @db.VarChar(60)
+  active       Int       @default(1) @db.Int
+  refreshToken String?   @db.VarChar(200)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime? @updatedAt
 
   @@map("TBL_CORE_USERS")
 }

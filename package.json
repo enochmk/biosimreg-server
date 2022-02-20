@@ -30,10 +30,12 @@
 	"homepage": "https://github.com/enochmk/biosimreg-backend#readme",
 	"dependencies": {
 		"@prisma/client": "^3.9.2",
+		"@types/cookie-parser": "^1.4.2",
 		"@types/jsonwebtoken": "^8.5.8",
 		"@types/md5": "^2.3.2",
 		"@types/yup": "^0.29.13",
 		"config": "^3.3.7",
+		"cookie-parser": "^1.4.6",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.2",

@@ -2,11 +2,48 @@ import moment from 'moment';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
+const User = prisma.user;
 
 export const getUserByUsername = async (username: string) => {
 	const data = await prisma.user.findUnique({
 		where: {
 			username,
+		},
+	});
+
+	return data;
+};
+
+export const getUserByRefreshToken = async (refreshToken: string) => {
+	const data = await prisma.user.findFirst({
+		where: {
+			refreshToken: refreshToken,
+		},
+	});
+
+	return data;
+};
+
+export const saveUserRefreshToken = async (username: string, refreshToken: string) => {
+	const updateUser = await prisma.user.update({
+		data: {
+			refreshToken: refreshToken,
+		},
+		where: {
+			username: username,
+		},
+	});
+
+	return updateUser;
+};
+
+export const clearUserRefreshToken = async (username: string) => {
+	const data = await prisma.user.update({
+		where: {
+			username: username,
+		},
+		data: {
+			refreshToken: '',
 		},
 	});
 
@@ -35,3 +72,5 @@ export const getUserStatistics = async (agentID: string) => {
 		daily_bcap_count: dailyBcap[0].count,
 	};
 };
+
+export default User;

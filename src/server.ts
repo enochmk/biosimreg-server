@@ -1,23 +1,23 @@
 /* eslint-disable no-console */
-import dotenv from 'dotenv';
 import config from 'config';
-import express from 'express';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import cookieParser from 'cookie-parser';
 import { PrismaClient } from '@prisma/client';
 
-import routes from './routes';
+import routes from './routes/routes';
 import errorHandler from './middlewares/errorHandler';
-
-const prisma = new PrismaClient();
 
 dotenv.config();
 
 const port = config.get('port') as number;
 const env = config.get('env') as string;
+
+const prisma = new PrismaClient();
 const app = express();
 
 // apply middleware

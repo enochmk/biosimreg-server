@@ -1,7 +1,6 @@
-import { getUserStatistics } from '../models/User';
+import { getUserByUsername } from '../models/User';
 
-export const getStatistics = async (username: string) => {
-	const stats = await getUserStatistics(username);
-
-	return { stats };
+export const getProfileDetails = async (username: string) => {
+	const data = await getUserByUsername(username);
+	return data;
 };

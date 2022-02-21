@@ -1,24 +1,13 @@
 import config from 'config';
 import jwt from 'jsonwebtoken';
 
+import { IPayload } from '../interfaces/User.interface';
+
 const ACCESS_TOKEN: string = config.get('jwt.accessToken');
 const REFRESH_TOKEN: string = config.get('jwt.refreshToken');
 
-interface IPayload {
-	user: {
-		username: string;
-	};
-	[key: string]: any;
-}
-
 export const generateAccessToken = (data: any) => {
-	const payload: IPayload = {
-		user: {
-			username: data.username,
-		},
-	};
-
-	const accessToken = jwt.sign(payload, ACCESS_TOKEN, {
+	const accessToken = jwt.sign(data, ACCESS_TOKEN, {
 		expiresIn: config.get('jwt.accessExpiresIn'),
 	});
 
@@ -26,13 +15,7 @@ export const generateAccessToken = (data: any) => {
 };
 
 export const generateRefreshToken = (data: any) => {
-	const payload: IPayload = {
-		user: {
-			username: data.username,
-		},
-	};
-
-	const refreshToken = jwt.sign(payload, REFRESH_TOKEN, {
+	const refreshToken = jwt.sign(data, REFRESH_TOKEN, {
 		expiresIn: config.get('jwt.refreshExpiresIn'),
 	});
 

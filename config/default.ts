@@ -8,7 +8,7 @@ export default {
 	port: process.env.PORT || 5000,
 	env: process.env.NODE_ENV || 'development',
 	jwt: {
-		accessExpiresIn: '30s',
+		accessExpiresIn: '30m',
 		refreshExpiresIn: '1h',
 		accessToken: process.env.ACCESS_TOKEN_SECRET,
 		refreshToken: process.env.REFRESH_TOKEN_SECRET,

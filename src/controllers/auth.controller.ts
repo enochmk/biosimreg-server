@@ -5,7 +5,7 @@ import { getUserByRefreshToken, clearUserRefreshToken } from '../models/User';
 
 import { verifyRefreshToken, generateAccessToken } from '../helpers/jwtHandler';
 
-import * as AuthService from '../services/auth.service';
+import * as Auth from '../services/auth.service';
 import asyncHandler from '../middlewares/asyncHandler';
 import HttpError from '../utils/errors/HttpError';
 
@@ -13,10 +13,7 @@ const COOKIE_AGE: number = config.get('cookie.age');
 
 export const handleLogin = asyncHandler(
 	async (req: Request, res: Response, _next: NextFunction) => {
-		const data = await AuthService.loginWithUsernameAndPassword(
-			req.body.username,
-			req.body.password
-		);
+		const data = await Auth.loginWithUsernameAndPassword(req.body.username, req.body.password);
 
 		// sign cookie
 		res.cookie('jwt', data.refreshToken, {
@@ -77,11 +74,13 @@ export const handleRefreshToken = asyncHandler(
 
 		try {
 			const decoded = verifyRefreshToken(refreshToken);
-			const accessToken = generateAccessToken(decoded);
+			const accessToken = generateAccessToken({ user: decoded.user });
+
+			console.log(accessToken);
 
 			return res.json({ accessToken });
-		} catch (error) {
-			return next(new HttpError('Forbidden', 403));
+		} catch (error: any) {
+			return next(new HttpError(error.message, 403));
 		}
 	}
 );

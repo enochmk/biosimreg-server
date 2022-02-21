@@ -1,39 +1,34 @@
 import md5 from 'md5';
 
 import HttpError from '../utils/errors/HttpError';
-import { IUser } from '../interfaces/User.interface';
 import { generateAccessToken, generateRefreshToken } from '../helpers/jwtHandler';
-import { getUserByUsername, saveUserRefreshToken } from '../models/User';
+import * as AuthModel from '../models/User';
 
 export const loginWithUsernameAndPassword = async (username: string, password: string) => {
-	const user = await getUserByUsername(username);
+	const foundUser = await AuthModel.getUserByUsername(username);
 
 	// ! User does not exist
-	if (!user) throw new HttpError('Invalid credentials', 401);
+	if (!foundUser) throw new HttpError('Invalid credentials', 401);
 
 	// hash password with MD5 algorithm
 	const hashedPassword = md5(password);
 
 	// ! Password does not match
-	if (user.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
+	if (foundUser.password !== hashedPassword) throw new HttpError('Invalid credentials', 401);
 
 	// return user object
-	const data: IUser = {
-		id: user.id,
-		firstName: user.firstName,
-		lastName: user.lastName,
-		username: user.username,
-		msisdn: user.msisdn,
+	const user = {
+		username: foundUser.username,
 	};
 
 	// generate access token
-	const accessToken = generateAccessToken(data);
+	const accessToken = generateAccessToken({ user });
 
 	// generate refresh token
-	const refreshToken = generateRefreshToken(data);
+	const refreshToken = generateRefreshToken({ user });
 
 	// save refresh token
-	await saveUserRefreshToken(data.username, refreshToken);
+	await AuthModel.saveUserRefreshToken(foundUser.username, refreshToken);
 
-	return { ...data, accessToken, refreshToken };
+	return { accessToken, refreshToken };
 };

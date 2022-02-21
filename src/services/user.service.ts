@@ -1,6 +1,6 @@
-import { getUserByUsername } from '../models/User';
+import * as UserModel from '../models/User';
 
 export const getProfileDetails = async (username: string) => {
-	const data = await getUserByUsername(username);
+	const data = await UserModel.getUserByUsername(username);
 	return data;
 };

@@ -2,10 +2,10 @@ import md5 from 'md5';
 
 import HttpError from '../utils/errors/HttpError';
 import { generateAccessToken, generateRefreshToken } from '../helpers/jwtHandler';
-import { getUserByUsername, saveUserRefreshToken } from '../models/User';
+import * as AuthModel from '../models/User';
 
 export const loginWithUsernameAndPassword = async (username: string, password: string) => {
-	const foundUser = await getUserByUsername(username);
+	const foundUser = await AuthModel.getUserByUsername(username);
 
 	// ! User does not exist
 	if (!foundUser) throw new HttpError('Invalid credentials', 401);
@@ -28,7 +28,7 @@ export const loginWithUsernameAndPassword = async (username: string, password: s
 	const refreshToken = generateRefreshToken({ user });
 
 	// save refresh token
-	await saveUserRefreshToken(foundUser.username, refreshToken);
+	await AuthModel.saveUserRefreshToken(foundUser.username, refreshToken);
 
 	return { accessToken, refreshToken };
 };

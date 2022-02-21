@@ -2,6 +2,7 @@
 import { NextFunction, Request, Response } from 'express';
 
 import asyncHandler from '../middlewares/asyncHandler';
+import * as ProfileService from '../services/profile.service';
 
 export const getDetails = asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
 	const data = res.locals.user;
@@ -9,5 +10,6 @@ export const getDetails = asyncHandler(async (req: Request, res: Response, _next
 });
 
 export const getStats = asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
-	return res.sendStatus(204);
+	const data = await ProfileService.getStatistics(res.locals.user.username);
+	return res.json(data);
 });

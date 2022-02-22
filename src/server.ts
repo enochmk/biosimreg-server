@@ -16,13 +16,14 @@ dotenv.config();
 
 const port = config.get('port') as number;
 const env = config.get('env') as string;
+const corsOptions: any = config.get('corsOptions');
 
 const prisma = new PrismaClient();
 const app = express();
 
 // apply middleware
-app.use(cors());
-app.use(morgan('short'));
+app.use(cors(corsOptions));
+app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());

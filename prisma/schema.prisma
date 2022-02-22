@@ -28,10 +28,8 @@ model User {
 }
 
 model Role {
-  id        Int       @id @default(autoincrement())
-  name      String    @unique @db.VarChar(30)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime? @updatedAt
+  id   Int    @id @default(autoincrement())
+  name String @unique @db.VarChar(30)
 
   User User[]
   @@map("TBL_CORE_ROLES")

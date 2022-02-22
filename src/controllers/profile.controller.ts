@@ -10,6 +10,6 @@ export const getDetails = asyncHandler(async (req: Request, res: Response, _next
 });
 
 export const getStats = asyncHandler(async (req: Request, res: Response, _next: NextFunction) => {
-	const data = await ProfileService.getStatistics(res.locals.user.username);
+	const data = await ProfileService.getStatistics(res.locals.user.msisdn);
 	return res.json(data);
 });

@@ -5,7 +5,7 @@ export const getProfileDetails = async (username: string) => {
 	return data;
 };
 
-export const getStatistics = async (username: string) => {
-	const data = await ProfileModel.getUserStatistics(username);
+export const getStatistics = async (msisdn: string) => {
+	const data = await ProfileModel.getUserStatistics(msisdn);
 	return data;
 };

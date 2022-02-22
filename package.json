@@ -4,9 +4,11 @@
 	"description": "",
 	"main": "server.js",
 	"scripts": {
+		"start": "node build/src/server.js",
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-		"start": "node build/server",
+		"build": "npm run cleanup && tsc --pretty",
 		"prepare": "husky install",
+		"cleanup": "rm -fr build",
 		"release": "npm run prettier && npm run lint && standard-version",
 		"lint-staged": "lint-staged",
 		"lint": "npm run lint:check && npm run lint:fix",

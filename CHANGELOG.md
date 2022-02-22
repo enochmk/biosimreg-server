@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version) for commit
 guidelines.
 
+## [1.2.0](https://github.com/enochmk/biosimreg-backend/compare/v1.1.0...v1.2.0) (2022-02-22)
+
+### Features
+
+- add get user profile statistics
+  ([7a24c02](https://github.com/enochmk/biosimreg-backend/commit/7a24c02738b74154343d14a7d6f2f58c0e766faf))
+- add route to check current user statistics
+  ([ab4c049](https://github.com/enochmk/biosimreg-backend/commit/ab4c0496e83cecc6baea3ac0ae32664b14eeeaf8))
+- add user roles and profile route
+  ([aa44f2c](https://github.com/enochmk/biosimreg-backend/commit/aa44f2c5fa90bb795e598fb5ee950bddd5e8120c))
+
 ## 1.1.0 (2022-02-20)
 
 ### Features

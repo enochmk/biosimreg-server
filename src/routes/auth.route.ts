@@ -8,6 +8,6 @@ const router = Router();
 
 router.route('/login').post(validator(loginSchema), handleLogin);
 router.route('/refresh').get(handleRefreshToken);
-router.route('/logout').get(handleLogout);
+router.route('/logout').post(handleLogout);
 
 export default router;

@@ -17,7 +17,7 @@ model User {
   username     String    @unique @db.VarChar(50)
   password     String    @db.VarChar(60)
   active       Int       @default(1) @db.Int
-  refreshToken String?
+  refreshToken String?   @unique
   roleId       Int       @default(1) @db.Int
   role         Role      @relation(fields: [roleId], references: [id])
   createdAt    DateTime  @default(now())

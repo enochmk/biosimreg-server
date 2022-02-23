@@ -7,8 +7,8 @@ import { getProfileDetails } from '../services/profile.service';
 const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const authorization = req.headers?.authorization;
 
-	if (!authorization) throw new HttpError('Not Authorized', 401);
-	if (!authorization.startsWith('Bearer')) throw new HttpError('Invalid Authorization', 400);
+	if (!authorization) return next(new HttpError('Not Authorized', 401));
+	if (!authorization.startsWith('Bearer')) return next(new HttpError('Invalid Authorization', 400));
 
 	// get the token
 	const token = authorization.split(' ')[1];
@@ -21,16 +21,16 @@ const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 		const user = await getProfileDetails(decoded.user.username);
 
 		// ! user not found
-		if (!user) throw new HttpError('User not found', 404);
+		if (!user) return next(new HttpError('User not found', 404));
 
 		// ! account disabled
-		if (!user?.active) throw new HttpError('User is not active', 401);
+		if (!user?.active) return next(new HttpError('User is not active', 401));
 
 		// save user data to request
 		res.locals.user = user;
 
 		// next middleware
-		next();
+		return next();
 	} catch (error: any) {
 		let message = error.message;
 
@@ -40,7 +40,7 @@ const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 		// handle invalid signature
 		if (message.includes('invalid signature')) message = 'Invalid token. Please login again';
 
-		next(new HttpError(message, 401));
+		return next(new HttpError(message, 401));
 	}
 };
 

@@ -18,6 +18,9 @@ export const getUserByRefreshToken = async (refreshToken: string) => {
 		where: {
 			refreshToken: refreshToken,
 		},
+		select: {
+			username: true,
+		},
 	});
 
 	return data;

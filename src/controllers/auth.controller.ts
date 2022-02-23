@@ -1,7 +1,7 @@
 /* eslint-disable  */
 import config from 'config';
 import { NextFunction, Request, Response } from 'express';
-import { getUserByRefreshToken, clearUserRefreshToken } from '../models/User';
+import { getUserByUsername, clearUserRefreshToken, getUserByRefreshToken } from '../models/User';
 
 import { verifyRefreshToken, generateAccessToken } from '../helpers/jwtHandler';
 
@@ -33,16 +33,20 @@ export const handleLogout = asyncHandler(
 		const cookies = req.cookies;
 
 		// ! No cookie set
-		if (!cookies?.jwt) return res.sendStatus(204); // No Content
+		if (!cookies?.jwt) {
+			return res.sendStatus(204);
+		}
 
 		// get refresh token from cookie
 		const refreshToken = cookies.jwt;
 
-		// get the user data for the refresh token
+		// get the user of this refresh token
 		const user = await getUserByRefreshToken(refreshToken);
 
-		// user found, clear refreshToken from db
-		if (user) await clearUserRefreshToken(user.username);
+		// clear refresh token from db
+		if (user) {
+			await clearUserRefreshToken(user?.username);
+		}
 
 		// clear cookie
 		res.clearCookie('jwt', {
@@ -61,23 +65,24 @@ export const handleRefreshToken = asyncHandler(
 		const cookies = req.cookies;
 
 		// ! No cookie set
-		if (!cookies?.jwt) return next(new HttpError("You're not logged in. Please log in.", 401));
+		if (!cookies?.jwt) {
+			return next(new HttpError("You're not logged in. Please log in.", 401));
+		}
 
 		// get refresh token from cookie
 		const refreshToken = cookies.jwt;
 
-		// get the user data for the refresh token
-		const user = await getUserByRefreshToken(refreshToken);
-
-		// ! user does not exist
-		if (!user) return next(new HttpError('Not Authorized', 401));
-
 		try {
+			// decode refresh token
 			const decoded = verifyRefreshToken(refreshToken);
+
+			// get the user data for the refresh token
+			const user = await getUserByUsername(decoded.user.username);
+
+			// ! user does not exist
+			if (!user) return next(new HttpError('Not Authorized', 401));
+
 			const accessToken = generateAccessToken({ user: decoded.user });
-
-			console.log(accessToken);
-
 			return res.json({ accessToken });
 		} catch (error: any) {
 			return next(new HttpError(error.message, 403));

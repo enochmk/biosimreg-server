@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import config from 'config';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -9,7 +8,7 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import { PrismaClient } from '@prisma/client';
 
-import routes from './routes/routes';
+import routes from './routes';
 import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();

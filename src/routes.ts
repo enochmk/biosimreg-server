@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
-import auth from './auth.route';
-import profile from './profile.route';
-import user from './user.route';
-import verifyJWT from '../middlewares/verifyJWT';
+import auth from './routes/auth.route';
+import profile from './routes/profile.route';
+import user from './routes/user.route';
+import verifyJWT from './middlewares/verifyJWT';
 
 const router = Router();
 

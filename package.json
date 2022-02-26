@@ -7,10 +7,9 @@
 		"start": "node build/src/server.js",
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
 		"build": "npm run cleanup && tsc --pretty",
-		"prepare": "husky install",
 		"cleanup": "rm -fr build",
-		"release": "npm run prettier && npm run lint && standard-version",
 		"lint-staged": "lint-staged",
+		"prepare": "husky install",
 		"lint": "npm run lint:check && npm run lint:fix",
 		"lint:check": "eslint . --ext .ts",
 		"lint:fix": "eslint . --ext .ts",
@@ -24,8 +23,8 @@
 		"url": "git+https://github.com/enochmk/biosimreg-backend.git"
 	},
 	"keywords": [],
-	"author": "Enoch Klufio, Precious Appiah",
-	"license": "ISC",
+	"author": "Enoch Klufio",
+	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/enochmk/biosimreg-backend/issues"
 	},

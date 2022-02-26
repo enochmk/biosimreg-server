@@ -33,10 +33,10 @@ export const getUserProfile = async (username: string) => {
 export const getUserStatistics = async (agentID: string) => {
 	return {
 		linking: {
-			total_linking_count: 0,
-			total_bcap_count: 0,
-			daily_linking_count: 0,
-			daily_bcap_count: 0,
+			total_linking_count: 80,
+			total_bcap_count: 58,
+			daily_linking_count: 21,
+			daily_bcap_count: 400,
 		},
 	};
 	const currentDate = moment().format('YYYY-MM-DD');

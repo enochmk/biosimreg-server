@@ -6,9 +6,9 @@ import express from 'express';
 import helmet from 'helmet';
 import hpp from 'hpp';
 import morgan from 'morgan';
-import { PrismaClient } from '@prisma/client';
 
 import routes from './routes';
+import prisma from './database/PrismaClient';
 import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
@@ -17,7 +17,6 @@ const port = config.get('port') as number;
 const env = config.get('env') as string;
 const corsOptions: any = config.get('corsOptions');
 
-const prisma = new PrismaClient();
 const app = express();
 
 // apply middleware

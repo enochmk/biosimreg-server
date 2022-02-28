@@ -1,7 +1,6 @@
 import moment from 'moment';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../database/PrismaClient';
 
-const prisma = new PrismaClient();
 const User = prisma.user;
 
 export const getUserProfile = async (username: string) => {

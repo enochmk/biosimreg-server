@@ -1,6 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../database/PrismaClient';
 
-const prisma = new PrismaClient();
 const User = prisma.user;
 
 export const getUserByUsername = async (username: string) => {

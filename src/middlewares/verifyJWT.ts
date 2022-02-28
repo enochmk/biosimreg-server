@@ -7,7 +7,10 @@ import { getProfileDetails } from '../services/profile.service';
 const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const authorization = req.headers?.authorization;
 
+	// ! authorization header is not present
 	if (!authorization) return next(new HttpError('Not Authorized', 401));
+
+	// ! authorization header is present but not in the correct format
 	if (!authorization.startsWith('Bearer')) return next(new HttpError('Invalid Authorization', 400));
 
 	// get the token
@@ -34,10 +37,10 @@ const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	} catch (error: any) {
 		let message = error.message;
 
-		// handle expired token
+		// ! handle expired token
 		if (message.includes('jwt expired')) message = 'Token expired. Please login again';
 
-		// handle invalid signature
+		// ! handle invalid signature
 		if (message.includes('invalid signature')) message = 'Invalid token. Please login again';
 
 		return next(new HttpError(message, 401));

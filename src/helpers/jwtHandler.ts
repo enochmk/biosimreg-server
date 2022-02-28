@@ -28,6 +28,18 @@ export const decodeToken = (token: string) => {
 };
 
 export const verifyRefreshToken = (token: string) => {
-	const decoded = jwt.verify(token, REFRESH_TOKEN) as IPayload;
-	return decoded;
+	try {
+		const decoded = jwt.verify(token, REFRESH_TOKEN) as IPayload;
+		return decoded;
+	} catch (error: any) {
+		let message = error.message;
+		message = message.includes('jwt expired')
+			? 'Session has expired. Please login again to continue.'
+			: message;
+		message = message.includes('invalid signature')
+			? 'Invalid signature. Please login again'
+			: message;
+
+		throw new Error(message);
+	}
 };

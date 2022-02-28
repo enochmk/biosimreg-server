@@ -11,6 +11,8 @@ import HttpError from '../utils/errors/HttpError';
 
 const COOKIE_AGE: number = config.get('cookie.age');
 
+// @desc generate an access token
+// @route POST /api/v1/auth/login
 export const handleLogin = asyncHandler(
 	async (req: Request, res: Response, _next: NextFunction) => {
 		const data = await Auth.loginWithUsernameAndPassword(req.body.username, req.body.password);
@@ -28,6 +30,8 @@ export const handleLogin = asyncHandler(
 	}
 );
 
+// @desc clear cookie and refreshToken from database
+// @route POST /api/v1/auth/logout
 export const handleLogout = asyncHandler(
 	async (req: Request, res: Response, _next: NextFunction) => {
 		const cookies = req.cookies;
@@ -60,13 +64,16 @@ export const handleLogout = asyncHandler(
 	}
 );
 
+// @desc use cookie to generate new access token
+// @route POST /api/v1/auth/refresh
 export const handleRefreshToken = asyncHandler(
 	async (req: Request, res: Response, next: NextFunction) => {
+		// get cookie from request
 		const cookies = req.cookies;
 
 		// ! No cookie set
 		if (!cookies?.jwt) {
-			return next(new HttpError("You're not logged in. Please log in.", 401));
+			return next(new HttpError('You are not logged in. Please log in.', 401));
 		}
 
 		// get refresh token from cookie
@@ -76,16 +83,20 @@ export const handleRefreshToken = asyncHandler(
 			// decode refresh token
 			const decoded = verifyRefreshToken(refreshToken);
 
-			// get the user data for the refresh token
+			// get the user data for the decoded refresh token via username
 			const user = await getUserByUsername(decoded.user.username);
 
 			// ! user does not exist
 			if (!user) return next(new HttpError('Not Authorized', 401));
 
+			// ? generate new access token
 			const accessToken = generateAccessToken({ user: decoded.user });
+
+			// * send response
 			return res.json({ accessToken });
 		} catch (error: any) {
-			return next(new HttpError(error.message, 403));
+			// ! unable to grant new access token
+			return next(new HttpError(error.message, 401));
 		}
 	}
 );

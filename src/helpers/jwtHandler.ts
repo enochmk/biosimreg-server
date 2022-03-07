@@ -33,9 +33,11 @@ export const verifyRefreshToken = (token: string) => {
 		return decoded;
 	} catch (error: any) {
 		let message = error.message;
+
 		message = message.includes('jwt expired')
 			? 'Session has expired. Please login again to continue.'
 			: message;
+
 		message = message.includes('invalid signature')
 			? 'Invalid signature. Please login again'
 			: message;

@@ -38,6 +38,7 @@ export const getUserStatistics = async (agentID: string) => {
 			daily_bcap_count: 400,
 		},
 	};
+
 	const currentDate = moment().format('YYYY-MM-DD');
 
 	const totalLinking: any =

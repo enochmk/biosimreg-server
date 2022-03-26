@@ -5,11 +5,14 @@
 	"main": "server.js",
 	"scripts": {
 		"start": "node build/src/server.js",
+		"db:pull": "prisma db pull && prisma generate",
+		"db:push": "prisma db push && prisma generate",
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
 		"build": "npm run cleanup && tsc --pretty",
 		"cleanup": "rm -fr build",
 		"lint-staged": "lint-staged",
 		"prepare": "husky install",
+		"format": "npm run lint && npm run prettier",
 		"lint": "npm run lint:check && npm run lint:fix",
 		"lint:check": "eslint . --ext .ts",
 		"lint:fix": "eslint . --ext .ts",
@@ -18,13 +21,13 @@
 		"prettier:fix": "prettier --write .",
 		"pretty-quick": "pretty-quick --staged"
 	},
+	"keywords": [],
+	"author": "Enoch Klufio",
+	"license": "MIT",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/enochmk/biosimreg-backend.git"
 	},
-	"keywords": [],
-	"author": "Enoch Klufio",
-	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/enochmk/biosimreg-backend/issues"
 	},
@@ -49,6 +52,7 @@
 		"mssql": "^8.0.2",
 		"mysql": "^2.18.1",
 		"nanoid": "^3.3.0",
+		"winston": "^3.6.0",
 		"xml2js": "^0.4.23",
 		"xss": "^1.0.10",
 		"yup": "^0.32.11"

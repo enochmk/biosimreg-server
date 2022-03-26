@@ -21,4 +21,8 @@ export default {
 		origin: [`http://localhost:5000`, `http://localhost:3000`],
 		optionSuccessStatus: 200,
 	},
+	logger: {
+		console: true,
+		path: '',
+	},
 };

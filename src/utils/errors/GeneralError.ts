@@ -5,7 +5,6 @@ class GeneralError extends Error {
 
 	constructor() {
 		super(Messages.TECHNICAL_ISSUE);
-		Error.captureStackTrace(this, this.constructor);
 		this.name = this.constructor.name;
 		this.statusCode = 500;
 	}

@@ -1,36 +1,378 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["extendedIndexes"]
-
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id           Int       @id @default(autoincrement())
-  firstName    String    @db.VarChar(30)
-  lastName     String    @db.VarChar(30)
-  msisdn       String    @unique @db.VarChar(9)
-  username     String    @unique @db.VarChar(50)
-  password     String    @db.VarChar(60)
-  active       Int       @default(1) @db.Int
-  refreshToken String?   @unique
-  roleId       Int       @default(1) @db.Int
-  role         Role      @relation(fields: [roleId], references: [id])
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime? @updatedAt
+model BackUpEngrafi {
+  TRANSACTION_ID    String    @id(map: "PK_BACKUP_KYC_ENGRAFI") @db.VarChar(100)
+  USERNAME          String?   @db.VarChar(100)
+  DOCTYPE           String    @db.VarChar(100)
+  DOCNUMBER         String?   @db.VarChar(100)
+  LASTNAME          String?   @db.VarChar(200)
+  FIRSTNAME         String?   @db.VarChar(Max)
+  NATIONALITY       String?   @db.VarChar(150)
+  DATEOFBIRTH       String?   @db.VarChar(150)
+  GENDER            String?   @db.VarChar(100)
+  CUSTOMERID        String?   @db.VarChar(100)
+  ACCOUNTID         String?   @db.VarChar(100)
+  TRANSACTIONID     String?   @db.VarChar(100)
+  STATUS            String?   @db.VarChar(100)
+  SIMTYPE           String?   @db.VarChar(100)
+  ALTERNATIVENUMBER String?   @db.VarChar(100)
+  MIDDLENAME        String?   @db.VarChar(100)
+  ADDRESS           String?   @db.VarChar(100)
+  CITY              String?   @db.VarChar(100)
+  REGION            String?   @db.VarChar(100)
+  ICCID             String?   @db.VarChar(100)
+  REQUEST_TYPE_ID   String?   @db.VarChar(100)
+  TIMESTAMP         String?   @db.VarChar(100)
+  CHANNEL           String?   @db.VarChar(100)
+  UPDATEDATE        String?   @db.VarChar(100)
+  CREATEDDATE       String?   @db.VarChar(100)
+  MSISDN            String?   @db.VarChar(100)
+  BACKUP_TIMESTAMP  DateTime? @default(now(), map: "DF_TBL_BACKUP_REREG_ENGRAFI_KYCP_TIMESTAMP")
 
-  @@index([username])
-  @@map("TBL_CORE_USERS")
+  @@map("BACKUP_KYC_ENGRAFI")
+}
+
+model BackUpMFS {
+  TRANSACTION_ID    String   @id(map: "PK_BACKUP_KYC_MFS") @db.VarChar(100)
+  USERNAME          String?  @db.VarChar(100)
+  DOCTYPE           String?  @db.VarChar(100)
+  DOCNUMBER         String?  @db.VarChar(100)
+  LASTNAME          String?  @db.VarChar(200)
+  FIRSTNAME         String?  @db.VarChar(Max)
+  NATIONALITY       String?  @db.VarChar(150)
+  DATEOFBIRTH       String?  @db.VarChar(100)
+  GENDER            String?  @db.VarChar(100)
+  CUSTOMERID        String?  @db.VarChar(100)
+  ACCOUNTID         String?  @db.VarChar(100)
+  TRANSACTIONID     String?  @db.VarChar(100)
+  STATUS            String?  @db.VarChar(100)
+  SIMTYPE           String?  @db.VarChar(100)
+  ALTERNATIVENUMBER String?  @db.VarChar(100)
+  MIDDLENAME        String?  @db.VarChar(100)
+  ADDRESS           String?  @db.VarChar(100)
+  CITY              String?  @db.VarChar(100)
+  REGION            String?  @db.VarChar(100)
+  ICCID             String?  @db.VarChar(100)
+  REQUEST_TYPE_ID   String?  @db.VarChar(100)
+  CHANNEL_ID        String?  @db.VarChar(100)
+  CHANNEL           String?  @db.VarChar(100)
+  UPDATEDATE        String?  @db.VarChar(100)
+  CREATEDDATE       String?  @db.VarChar(100)
+  MSISDN            String?  @db.VarChar(100)
+  NEXTOFKIN         String?  @db.VarChar(100)
+  PROOFOFADDRESS    String?  @db.VarChar(100)
+  TIMESTAMP         DateTime @default(now(), map: "DF_TBL_BACKUP_REREG_MFS_KYC_TIMESTAMP")
+
+  @@map("BACKUP_KYC_MFS")
+}
+
+model BackUpMasterVerificationChurned {
+  ID                     BigInt    @id(map: "PK_BACKUP_MASTER_VERIFICATION_CHURNED") @default(autoincrement())
+  MSISDN                 String?   @db.VarChar(20)
+  DOCUMENT_ID            String?   @db.VarChar(100)
+  DOCUMENT_TYPE          String?   @db.VarChar(50)
+  TRANSACTIONID_VERIFY   String?   @db.VarChar(150)
+  TRANSACTIONID_BCAP     String?   @db.VarChar(150)
+  VERIFICATION_TIMESTAMP DateTime?
+  BCAP_TIMESTAMP         DateTime?
+  CHURN_TIMESTAMP        DateTime?
+  CHURN_COMMENT          String?   @db.VarChar(Max)
+  CHURN_USERNAME         String?   @db.VarChar(250)
+
+  @@map("BACKUP_MASTER_VERIFICATION_CHURNED")
+}
+
+model CoreMSISDNDetails {
+  TRANSACTION_ID     String            @id(map: "PK_CORE_OBJ_MSISDN") @db.VarChar(100)
+  MSISDN             String            @unique(map: "UNIQUE_MSISDN") @db.VarChar(20)
+  CREATE_MFS         String            @db.VarChar(5)
+  ICCID              String            @db.VarChar(30)
+  PAYMENT_MODE       String            @db.VarChar(10)
+  TIMESTAMP          DateTime          @default(now(), map: "DF__CORE_MSIS__TIMES__59FA5E80")
+  MASTER_TRANSACTION MasterTransaction @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction, map: "FK_CORE_MSISDN_DETAIL_CORE_MSISDN_DETAIL")
+
+  @@map("CORE_MSISDN_DETAIL")
+}
+
+model CoreSystemCode {
+  ID                        BigInt  @default(autoincrement())
+  CODE                      String  @id(map: "PK_CORE_SYSTEM_CODE") @db.VarChar(10)
+  LOG_MESSAGE               String? @db.VarChar(200)
+  CUSTOMER_MESSAGE_TEMPLATE String? @db.VarChar(200)
+  DESCRIPTION               String? @db.VarChar(250)
+
+  @@map("CORE_SYSTEM_CODE")
+}
+
+model MasterBCAP {
+  MSISDN         String        @id(map: "PK_MASTER_BCAP") @db.VarChar(20)
+  BCAP_AGENT_ID  String        @db.VarChar(100)
+  BCAP_TIMESTAMP DateTime      @default(now(), map: "DF__MASTER_BC__BCAP___114A936A")
+  LAT            String?       @db.VarChar(10)
+  LONG           String?       @db.VarChar(10)
+  MASTER_LINKING MasterLinking @relation("MASTER_BCAPToMASTER_LINKING", fields: [MSISDN], references: [MSISDN], onUpdate: NoAction, map: "MASTER_LINKING_BCAP")
+
+  @@map("MASTER_BCAP")
+}
+
+model MasterKYC {
+  DOCUMENT_ID          String             @id(map: "PK_MASTER_KYC") @db.VarChar(100)
+  DOCUMENT_TYPE_ID     Int
+  SUUID                String             @db.VarChar(180)
+  FIRST_NAME           String             @db.VarChar(180)
+  MIDDLE_NAME          String?            @db.VarChar(180)
+  LAST_NAME            String             @db.VarChar(180)
+  ADDRESS              String             @db.VarChar(180)
+  DIGITAL_ADDRESS      String?            @db.VarChar(180)
+  DATE_OF_BIRTH        String             @db.VarChar(20)
+  GENDER               String             @db.VarChar(20)
+  NATIONALITY          String?            @db.VarChar(180)
+  TRANSACTION_ID       String?            @db.VarChar(100)
+  SYSTEM_DOCUMENT_TYPE SystemDocumentType @relation("MASTER_KYCToSYSTEM_DOCUMENT_TYPE", fields: [DOCUMENT_TYPE_ID], references: [ID], onUpdate: NoAction, map: "FK_MASTER_KYC_SYSTEM_DOCUMENT_TYPE")
+  MASTER_TRANSACTION   MasterTransaction? @relation("MASTER_KYCToMASTER_TRANSACTION", fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_MASTER_KYC_MASTER_TRANSACTION_ID")
+  MASTER_LINKING       MasterLinking[]
+
+  @@map("MASTER_KYC")
+}
+
+model MasterLinking {
+  MSISDN              String            @id(map: "PK_MASTER_LINKING") @db.VarChar(20)
+  DOCUMENT_ID         String            @db.VarChar(100)
+  REQUEST_TYPE_ID     Int
+  AGENT_ID            String            @db.VarChar(100)
+  TIMESTAMP           DateTime          @default(now(), map: "DF__MASTER_LI__TIMES__59063A47")
+  TRANSACTION_ID      String            @db.VarChar(100)
+  MASTER_KYC          MasterKYC         @relation(fields: [DOCUMENT_ID], references: [DOCUMENT_ID], onUpdate: NoAction, map: "FK_MASTER_LINKING_MASTER_KYC")
+  SYSTEM_REQUEST_TYPE SystemRequestType @relation("MASTER_LINKINGToSYSTEM_REQUEST_TYPE", fields: [REQUEST_TYPE_ID], references: [ID], onUpdate: NoAction, map: "FK_MASTER_LINKING_SYSTEM_REQUEST_TYPE")
+  MASTER_BCAP         MasterBCAP?       @relation("MASTER_BCAPToMASTER_LINKING")
+
+  @@map("MASTER_LINKING")
+}
+
+model MasterTransaction {
+  TRANSACTION_ID                String                       @id(map: "PK_MASTER_TRANSACTION") @db.VarChar(100)
+  MSISDN                        String                       @db.VarChar(20)
+  SERVICE_TYPE_ID               Int
+  STATUS                        String?                      @db.VarChar(20)
+  SYSTEM                        String?                      @db.VarChar(50)
+  MESSAGE                       String?                      @db.VarChar(200)
+  TIMESTAMP                     DateTime                     @default(now(), map: "DF_TBL_CORE_LOG_TRANSACTIONS_TIMESTAMP")
+  SYSTEM_SERVICE_TYPE           SystemServiceType            @relation("MASTER_TRANSACTIONToSYSTEM_SERVICE_TYPE", fields: [SERVICE_TYPE_ID], references: [ID], onUpdate: NoAction, map: "FK_MASTER_TRANSACTION_SYSTEM_SERVICE_TYPE")
+  CORE_MSISDN_DETAIL            CoreMSISDNDetails?
+  MASTER_KYC                    MasterKYC[]                  @relation("MASTER_KYCToMASTER_TRANSACTION")
+  SERVICE_EXTERNAL_REGISTRATION ServiceExternalRegistration?
+  SERVICE_LINKING               ServiceLinking?
+  SERVICE_LINKING_SECURITY      ServiceLinkingSecurity?
+  SERVICE_VERIFY_LINKING        ServiceVerifyLinking?
+
+  @@map("MASTER_TRANSACTION")
+}
+
+model ServiceBiocapture {
+  TRANSACTION_ID      String   @id(map: "PK_SERVICE_BIOCAPTURE") @db.VarChar(100)
+  AGENT_ID            String   @db.VarChar(100)
+  MSISDN              String   @db.VarChar(50)
+  BIOMETRIC_DATA      String   @db.VarChar(100)
+  GHANAPOST_USERINPUT String   @db.VarChar(100)
+  TIMESTAMP           DateTime @default(now(), map: "DF_SERVICE_BIOCAPTURE_MOBILEAPP_REQUESTE_TIMESTAMP") @db.DateTime
+  DOCUMENT_ID         String?  @db.VarChar(50)
+  SUUID               String?  @db.VarChar(50)
+  AGENT_LONG          String?  @db.VarChar(50)
+  AGENT_LAT           String?  @db.VarChar(50)
+
+  @@map("SERVICE_BIOCAPTURE")
+  @@ignore
+}
+
+model ServiceExternalRegistration {
+  TRANSACTION_ID        String            @id(map: "PK_SERVICE_EXTERNAL_REGISTRATION") @db.VarChar(100)
+  AGENT_ID              String?           @db.VarChar(20)
+  MSISDN                String?           @db.VarChar(20)
+  ICCID                 String?           @db.VarChar(20)
+  SURNAME               String?           @db.VarChar(180)
+  DOCUMENT_ID           String?           @db.VarChar(100)
+  EMAIL                 String?           @db.VarChar(100)
+  CREATE_MFS            String?           @db.VarChar(20)
+  ALTERNATIVE_NUMBER    String?           @db.VarChar(20)
+  NEXT_OF_KIN_FULL_NAME String?           @db.VarChar(180)
+  NEXT_OF_KIN_ID_NUMBER String?           @db.VarChar(20)
+  NEXT_OF_KIN_MSISDN    String?           @db.VarChar(20)
+  DIGITAL_ADDRESS       String?           @db.VarChar(20)
+  GENDER                String?           @db.VarChar(20)
+  DATE_OF_BIRTH         String?           @db.VarChar(20)
+  ENTITY                String?           @db.VarChar(180)
+  SUBSCRIPTION          String?           @db.VarChar(50)
+  REFERENCE             String?           @db.VarChar(180)
+  TIMESTAMP             DateTime?         @default(now(), map: "DF_TBL_SERVICE_REG_MOBILEAPP_REQUEST_TIMESTAMP")
+  MASTER_TRANSACTION    MasterTransaction @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction, map: "FK_SERVICE_EXTERNAL_REGISTRATION_MASTER_TRANSACTION")
+
+  @@map("SERVICE_EXTERNAL_REGISTRATION")
+}
+
+model ServiceExternalLinking {
+  TRANSACTION_ID        String    @id(map: "PK_SERVICE_EXTERNAL_REREGISTRATION") @db.VarChar(100)
+  AGENT_ID              String?   @db.VarChar(20)
+  MSISDN                String?   @db.VarChar(20)
+  ICCID                 String?   @db.VarChar(20)
+  SURNAME               String?   @db.VarChar(20)
+  DOCUMENT_ID           String?   @db.VarChar(20)
+  EMAIL                 String?   @db.VarChar(100)
+  CREATE_MFS            String?   @db.VarChar(20)
+  ALTERNATIVE_NUMBER    String?   @db.VarChar(20)
+  NEXT_OF_KIN_FULL_NAME String?   @db.VarChar(180)
+  NEXT_OF_KIN_ID_NUMBER String?   @db.VarChar(20)
+  NEXT_OF_KIN_MSISDN    String?   @db.VarChar(20)
+  DIGITAL_ADDRESS       String?   @db.VarChar(20)
+  GENDER                String?   @db.VarChar(20)
+  DATE_OF_BIRTH         String?   @db.VarChar(20)
+  ENTITY                String?   @db.VarChar(180)
+  SUBSCRIPTION          String?   @db.VarChar(50)
+  REFERENCE             String?   @db.VarChar(180)
+  TIMESTAMP             DateTime? @default(now(), map: "DF__SERVICE_R__TIMES__5FB337D6")
+
+  @@map("SERVICE_EXTERNAL_LINKING")
+}
+
+model ServiceLinking {
+  TRANSACTION_ID     String            @id(map: "PK_SERVICE_LINKING") @db.VarChar(100)
+  MSISDN             String            @db.VarChar(20)
+  SURNAME            String?           @db.VarChar(180)
+  FORENAMES          String?           @db.VarChar(180)
+  GENDER             String?           @db.VarChar(20)
+  DOCUMENT_ID        String?           @db.VarChar(100)
+  DATE_OF_BIRTH      String?           @db.VarChar(20)
+  CELL_ID            String?           @db.VarChar(50)
+  CHANNEL_ID         String?           @db.VarChar(100)
+  TIMESTAMP          DateTime?         @default(now(), map: "DF_TBL_SERVICE_REREG_LINKING_REQUESTS")
+  MASTER_TRANSACTION MasterTransaction @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction, map: "FK_SERVICE_LINKING_MASTER_TRANSACTION")
+
+  @@map("SERVICE_LINKING")
+}
+
+model ServiceLinkingSecurity {
+  TRANSACTION_ID              String            @id(map: "PK_SERVICE_LINKING_SECURITY") @db.VarChar(100)
+  MSISDN                      String            @db.VarChar(20)
+  MFS_BALANCE_INPUT           String            @db.VarChar(15)
+  MFS_BALANCE_RESULT          String?           @db.VarChar(15)
+  FDN1_INPUT                  String?           @db.VarChar(20)
+  FDN2_INPUT                  String?           @db.VarChar(20)
+  FDN_RESULT                  String?           @db.VarChar(210)
+  LAST_RECHARGE_AMOUNT_INPUT  String?           @db.VarChar(20)
+  LAST_RECHARGE_AMOUNT_RESULT String?           @db.VarChar(20)
+  ACTIVATION_YEAR_INPUT       String?           @db.VarChar(10)
+  ACTIVATION_YEAR_RESULT      String?           @db.VarChar(50)
+  CELL_ID                     String?           @db.VarChar(20)
+  TIMESTAMP                   DateTime          @default(now(), map: "DF_SERVICE_LINKING_SECURITY_TIMESTAMP")
+  MASTER_TRANSACTION          MasterTransaction @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction, map: "FK_SERVICE_LINKING_SECURITY_MASTER_TRANSACTION")
+
+  @@map("SERVICE_LINKING_SECURITY")
+}
+
+model ServiceRegistration {
+  TRANSACTION_ID      String             @id(map: "PK_SERVICE_REGISTRATION") @db.VarChar(100)
+  MSISDN              String             @db.VarChar(20)
+  DOCUMENT_ID         String?            @db.VarChar(100)
+  SURNAME             String?            @db.VarChar(100)
+  ICCID               String?            @db.VarChar(20)
+  NEXT_OF_KIN         String?            @db.VarChar(200)
+  ALTERNATIVE_NUMBER  String?            @db.VarChar(120)
+  REQUEST_TYPE_ID     Int?
+  CHANNEL_ID          String?            @db.VarChar(100)
+  MFS_STATUS          String?            @db.VarChar(100)
+  MFS_MESSAGE         String?            @db.VarChar(190)
+  AGENT_ID            String             @db.VarChar(20)
+  CELL_ID             String?            @db.VarChar(20)
+  TIMESTAMP           DateTime           @default(now(), map: "DF_SERVICE_REGISTRATION_TIMESTAMP")
+  SYSTEM_REQUEST_TYPE SystemRequestType? @relation("SERVICE_REGISTRATIONToSYSTEM_REQUEST_TYPE", fields: [REQUEST_TYPE_ID], references: [ID], onDelete: NoAction, onUpdate: NoAction, map: "REQUEST_KEY_ID_FK")
+
+  @@map("SERVICE_REGISTRATION")
+}
+
+model ServiceVerifyLinking {
+  TRANSACTION_ID     String            @id(map: "PK_SERVICE_VERIFY_LINKING") @db.VarChar(100)
+  MSISDN             String            @db.VarChar(50)
+  AGENT_ID           String            @db.VarChar(50)
+  SUUID              String            @db.VarChar(100)
+  TIMESTAMP          DateTime          @default(now(), map: "DF_TBL_SERVICE_VERIFYSUUID_MOBILEAPP_REQUEST") @db.DateTime
+  AGENT_LONG         String?           @db.VarChar(50)
+  AGENT_LAT          String?           @db.VarChar(50)
+  MASTER_TRANSACTION MasterTransaction @relation(fields: [TRANSACTION_ID], references: [TRANSACTION_ID], onUpdate: NoAction, map: "FK_SERVICE_VERIFY_LINKING_MASTER_TRANSACTION")
+
+  @@map("SERVICE_VERIFY_LINKING")
+}
+
+model SystemRequestType {
+  ID                   Int                   @id(map: "PK_SYSTEM_REQUEST_TYPE")
+  KEYWORD              String                @db.VarChar(50)
+  MASTER_LINKING       MasterLinking[]       @relation("MASTER_LINKINGToSYSTEM_REQUEST_TYPE")
+  SERVICE_REGISTRATION ServiceRegistration[] @relation("SERVICE_REGISTRATIONToSYSTEM_REQUEST_TYPE")
+
+  @@map("SYSTEM_REQUEST_TYPE")
+}
+
+model SystemServiceType {
+  ID                 Int                 @id(map: "PK_SYSTEM_SERVICE_TYPE")
+  KEYWORD            String              @db.VarChar(80)
+  MASTER_TRANSACTION MasterTransaction[] @relation("MASTER_TRANSACTIONToSYSTEM_SERVICE_TYPE")
+
+  @@map("SYSTEM_SERVICE_TYPE")
+}
+
+model SystemDocumentType {
+  ID         Int         @id(map: "PK_SYSTEM_DOCUMENT_ID")
+  KEYWORD    String      @db.VarChar(60)
+  MASTER_KYC MasterKYC[] @relation("MASTER_KYCToSYSTEM_DOCUMENT_TYPE")
+
+  @@map("SYSTEM_DOCUMENT_TYPE")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B6178735F64") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model CoreSkipValidation {
+  MSISDN    String    @id(map: "PK__CORE_SKI__757417BEEFC96D06") @db.VarChar(9)
+  TIMESTAMP DateTime? @default(now(), map: "DF__SIMREG_CO__ADATE__1EA48E88")
+
+  @@index([MSISDN], map: "MSISDN_INDEX")
+  @@map("CORE_SKIP_VALIDATION")
+}
+
+model User {
+  ID            Int       @id @default(autoincrement())
+  FIRST_NAME    String    @db.VarChar(30)
+  LAST_NAME     String    @db.VarChar(30)
+  MSISDN        String    @unique @db.VarChar(9)
+  USERNAME      String    @unique @db.VarChar(50)
+  PASSWORD      String    @db.VarChar(180)
+  ACTIVE        Int       @default(1) @db.Int
+  REFRESH_TOKEN String?   @unique
+  ROLE_ID       Int       @default(1) @db.Int
+  ROLE          Role      @relation(fields: [ROLE_ID], references: [ID])
+  CREATED_AT    DateTime  @default(now())
+  UPDATE_AT     DateTime? @updatedAt
+
+  @@index([USERNAME])
+  @@map("MASTER_USER")
 }
 
 model Role {
-  id   Int    @id @default(autoincrement())
-  name String @unique @db.VarChar(30)
+  ID      Int    @id @default(autoincrement())
+  KEYWORD String @unique @db.VarChar(30)
 
   User User[]
-  @@map("TBL_CORE_ROLES")
+  @@map("SYSTEM_ROLE_TYPE")
 }

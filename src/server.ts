@@ -10,6 +10,7 @@ import morgan from 'morgan';
 import routes from './routes';
 import prisma from './database/PrismaClient';
 import errorHandler from './middlewares/errorHandler';
+import logger from './utils/loggers/logger';
 
 dotenv.config();
 
@@ -32,13 +33,13 @@ app.use(errorHandler);
 // start express server
 app.listen(port, () => {
 	const message = `Server is running in mode: ${env} at http://localhost:${port}`;
-	console.log(message);
+	logger.info(message);
 
-	prisma
-		.$connect()
-		.then(() => console.log('Connected to database'))
-		.catch((err: any) => {
-			console.error(err.message);
-			process.exit(1);
-		});
+	try {
+		prisma.$connect();
+		logger.info('Connected to database');
+	} catch (error) {
+		logger.error(error);
+		process.exit(1);
+	}
 });

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import { decodeToken } from '../helpers/jwtHandler';
 import HttpError from '../utils/errors/HttpError';
-import { getProfileDetails } from '../services/profile.service';
+import { getProfileDetails } from '../services/profile.services';
 
 const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 	const authorization = req.headers?.authorization;
@@ -27,7 +27,7 @@ const verifyJWT = async (req: Request, res: Response, next: NextFunction) => {
 		if (!user) return next(new HttpError('User not found', 404));
 
 		// ! account disabled
-		if (!user?.active) return next(new HttpError('User is not active', 401));
+		if (!user?.ACTIVE) return next(new HttpError('User is not active', 401));
 
 		// save user data to request
 		res.locals.user = user;

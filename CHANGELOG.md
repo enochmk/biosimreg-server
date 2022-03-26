@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file. See
 [standard-version](https://github.com/conventional-changelog/standard-version) for commit
 guidelines.
 
+### [1.2.1](https://github.com/enochmk/biosimreg-backend/compare/v1.2.0...v1.2.1) (2022-03-26)
+
+### Bug Fixes
+
+- verifyJWT middleware issue fixed
+  ([9fd97df](https://github.com/enochmk/biosimreg-backend/commit/9fd97df84962d78063ad2a1ae6c8ef2d9d220dcd))
+
 ## [1.2.0](https://github.com/enochmk/biosimreg-backend/compare/v1.1.0...v1.2.0) (2022-02-22)
 
 ### Features

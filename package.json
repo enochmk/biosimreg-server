@@ -1,6 +1,6 @@
 {
 	"name": "biosimreg-server",
-	"version": "1.2.0",
+	"version": "1.2.1",
 	"description": "",
 	"main": "server.js",
 	"scripts": {
@@ -19,7 +19,11 @@
 		"prettier": "npm run prettier:check && npm run prettier:fix",
 		"prettier:check": "prettier --check .",
 		"prettier:fix": "prettier --write .",
-		"pretty-quick": "pretty-quick --staged"
+		"pretty-quick": "pretty-quick --staged",
+		"release": "standard-version",
+		"test": "jest",
+		"test:coverage": "jest --coverage",
+		"test:watch": "jest --watchAll"
 	},
 	"keywords": [],
 	"author": "Enoch Klufio",

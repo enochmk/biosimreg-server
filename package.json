@@ -1,14 +1,14 @@
 {
 	"name": "biosimreg-server",
 	"version": "1.2.1",
-	"description": "",
+	"description": "A server for the BioSimReg web application",
 	"main": "server.js",
 	"scripts": {
 		"start": "node build/src/server.js",
 		"db:pull": "prisma db pull && prisma generate",
 		"db:push": "prisma db push && prisma generate",
 		"dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-		"build": "npm run cleanup && tsc --pretty",
+		"build": "npm run cleanup && npm run format && tsc --pretty",
 		"cleanup": "rm -fr build",
 		"lint-staged": "lint-staged",
 		"prepare": "husky install",
@@ -24,6 +24,9 @@
 		"test": "jest",
 		"test:coverage": "jest --coverage",
 		"test:watch": "jest --watchAll"
+	},
+	"lint-staged": {
+		"src/**/*.ts": "eslint --fix && prettier --write"
 	},
 	"keywords": [],
 	"author": "Enoch Klufio",
@@ -90,8 +93,5 @@
 		"ts-node": "^10.5.0",
 		"ts-node-dev": "^1.1.8",
 		"typescript": "^4.5.5"
-	},
-	"lint-staged": {
-		"*.ts": "eslint --cache --fix"
 	}
 }

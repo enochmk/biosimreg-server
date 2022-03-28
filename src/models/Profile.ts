@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 import prisma from '../database/PrismaClient';
 
 const User = prisma.user;
@@ -28,14 +30,58 @@ export const getUserProfile = async (username: string) => {
 	return user;
 };
 
-export const getUserStatistics = async (agentID: string) => ({
-	linking: {
-		total_linking_count: 80,
-		total_bcap_count: 58,
-		daily_linking_count: 21,
-		daily_bcap_count: 400,
-		agentID: agentID,
-	},
-});
+export const getUserStatistics = async (agentID: string) => {
+	const currentDate = moment().format('YYYY-MM-DD');
+	const nextDate = moment().add(1, 'days').format('YYYY-MM-DD');
+	const currentDateIso = moment.utc(currentDate).toISOString();
+	const nextDateIso = moment.utc(nextDate).toISOString();
+
+	const totalLinkingCount = await prisma.masterLinking.count({
+		where: {
+			AGENT_ID: agentID,
+		},
+	});
+
+	const dailyLinkingCount = await prisma.masterLinking.count({
+		where: {
+			AND: [
+				{
+					AGENT_ID: agentID,
+					TIMESTAMP: {
+						gte: currentDateIso,
+						lt: nextDateIso,
+					},
+				},
+			],
+		},
+	});
+
+	const totalBcapCount = await prisma.masterBCAP.count({
+		where: {
+			AGENT_ID: agentID,
+		},
+	});
+
+	const dailyBcapCount = await prisma.masterBCAP.count({
+		where: {
+			AND: {
+				AGENT_ID: agentID,
+				TIMESTAMP: {
+					gte: currentDateIso,
+					lt: nextDateIso,
+				},
+			},
+		},
+	});
+
+	const result = {
+		totalLinkingCount: totalLinkingCount,
+		totalBcapCount: totalBcapCount,
+		dailyLinkingCount: dailyLinkingCount,
+		dailyBcapCount: dailyBcapCount,
+	};
+
+	return result;
+};
 
 export default User;

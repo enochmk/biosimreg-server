@@ -113,8 +113,8 @@ model CoreSystemCode {
 
 model MasterBCAP {
   MSISDN         String        @id(map: "PK_MASTER_BCAP") @db.VarChar(20)
-  BCAP_AGENT_ID  String        @db.VarChar(100)
-  BCAP_TIMESTAMP DateTime      @default(now(), map: "DF__MASTER_BC__BCAP___114A936A")
+  AGENT_ID       String        @db.VarChar(100)
+  TIMESTAMP      DateTime      @default(now(), map: "DF__MASTER_BC__BCAP___114A936A")
   LAT            String?       @db.VarChar(10)
   LONG           String?       @db.VarChar(10)
   MASTER_LINKING MasterLinking @relation("MASTER_BCAPToMASTER_LINKING", fields: [MSISDN], references: [MSISDN], onUpdate: NoAction, map: "MASTER_LINKING_BCAP")
@@ -358,12 +358,12 @@ model User {
   MSISDN        String    @unique @db.VarChar(9)
   USERNAME      String    @unique @db.VarChar(50)
   PASSWORD      String    @db.VarChar(180)
-  ACTIVE        Int       @default(1) @db.Int
+  ACTIVE        Int       @default(1, map: "MASTER_USER_ACTIVE_df")
   REFRESH_TOKEN String?   @unique
-  ROLE_ID       Int       @default(1) @db.Int
-  ROLE          Role      @relation(fields: [ROLE_ID], references: [ID])
-  CREATED_AT    DateTime  @default(now())
+  ROLE_ID       Int       @default(1, map: "MASTER_USER_ROLE_ID_df")
+  CREATED_AT    DateTime  @default(now(), map: "MASTER_USER_CREATED_AT_df")
   UPDATE_AT     DateTime? @updatedAt
+  ROLE          Role      @relation(fields: [ROLE_ID], references: [ID])
 
   @@index([USERNAME])
   @@map("MASTER_USER")
@@ -372,7 +372,7 @@ model User {
 model Role {
   ID      Int    @id @default(autoincrement())
   KEYWORD String @unique @db.VarChar(30)
+  User    User[]
 
-  User User[]
   @@map("SYSTEM_ROLE_TYPE")
 }

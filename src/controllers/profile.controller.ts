@@ -1,5 +1,4 @@
-/* eslint-disable  */
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 
 import asyncHandler from '../middlewares/asyncHandler';
 import * as ProfileService from '../services/profile.services';
@@ -10,6 +9,6 @@ export const getDetails = asyncHandler(async (req: Request, res: Response) => {
 });
 
 export const getStats = asyncHandler(async (req: Request, res: Response) => {
-	const data = await ProfileService.getStatistics(res.locals.user.msisdn);
+	const data = await ProfileService.getStatistics(res.locals.user.MSISDN);
 	return res.json(data);
 });

@@ -18,7 +18,7 @@ export default {
 	},
 	corsOptions: {
 		credentials: true,
-		origin: process.env.ORIGINS || [`http://localhost:5000`, `http://localhost:3000`],
+		origin: process.env.ORIGINS || [`http://localhost:3000`],
 		optionSuccessStatus: 200,
 	},
 	logger: {

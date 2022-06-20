@@ -2,7 +2,7 @@
 	"name": "biosimreg-server",
 	"version": "1.2.1",
 	"description": "A server for the BioSimReg web application",
-	"main": "server.js",
+	"main": "src/server.js",
 	"scripts": {
 		"start": "node build/src/server.js",
 		"db:pull": "prisma db pull && prisma generate",
